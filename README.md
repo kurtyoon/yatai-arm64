@@ -11,6 +11,6 @@ Yatai 1.x 구성요소의 arm64 이미지. 공식 이미지는 amd64 전용이�
 | `ghcr.io/kurtyoon/yatai-arm64/bentoml-proxy` | 0.0.1 |
 | `ghcr.io/kurtyoon/yatai-arm64/metrics-transformer` | 0.1.0 |
 
-`images/<이미지>/Dockerfile`이 upstream 소스를 고정 커밋으로 받아 빌드한다. metrics-transformer는 upstream 소스가 공개되어 있지 않아 새로 작성했다. main에 push하면 GitHub Actions가 빌드해 GHCR에 올린다.
+`images/<이미지>/Dockerfile`이 upstream 소스를 고정 커밋으로 받아 빌드한다. yatai-image-builder에는 패치 하나(`namespaced-cache.patch`)를 적용한다: `BENTO_REQUEST_NAMESPACES`를 주면 그 네임스페이스만 감시한다. metrics-transformer는 upstream 소스가 공개되어 있지 않아 새로 작성했다. main에 push하면 GitHub Actions가 빌드해 GHCR에 올린다.
 
 upstream(bentoml/Yatai, bentoml/yatai-deployment, bentoml/yatai-image-builder)은 Apache License 2.0이다.

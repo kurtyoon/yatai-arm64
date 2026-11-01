@@ -1,6 +1,8 @@
 # yatai-image-builder 1.2.56 for arm64: the upstream Dockerfile at the same
 # tag, with GOARCH taken from the target platform instead of a fixed amd64.
 # Pin this line: an unpinned install gives 3.x, a different project line.
+# One source change, namespaced-cache.patch: with BENTO_REQUEST_NAMESPACES
+# set, the operator watches only those namespaces (issue #5).
 
 FROM golang:1.27.1 AS build
 ARG REPO=https://github.com/bentoml/yatai-image-builder.git
@@ -10,6 +12,8 @@ ARG VERSION=1.2.56
 ARG TARGETARCH
 RUN git clone --quiet --filter=blob:none "$REPO" /src && git -C /src checkout --quiet "$COMMIT"
 WORKDIR /src
+COPY namespaced-cache.patch /tmp/
+RUN git apply /tmp/namespaced-cache.patch
 # The same -X flags as the upstream Makefile (VERSION_BUILDFLAGS).
 RUN PKG=github.com/bentoml/yatai-image-builder \
     && CGO_ENABLED=0 GOOS=linux GOARCH="$TARGETARCH" GOTOOLCHAIN=local go build -a \
