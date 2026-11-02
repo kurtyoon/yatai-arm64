@@ -1,0 +1,7 @@
+#!/bin/sh
+# The init script yatai-image-builder writes calls curl from PATH, with no
+# retry. A new build pod's first connection to the Yatai server is refused
+# until the network policy controller admits the pod's IP, a few seconds after
+# the pod starts, so every build pod failed. Retry refused connections for up
+# to two minutes.
+exec /usr/bin/curl --retry 20 --retry-delay 3 --retry-connrefused --retry-max-time 120 "$@"
