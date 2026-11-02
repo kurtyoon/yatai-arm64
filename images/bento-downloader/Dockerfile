@@ -19,3 +19,7 @@ RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o /t
     && unzip -q /tmp/awscliv2.zip -d /tmp \
     && /tmp/aws/install \
     && rm -rf /tmp/awscliv2.zip /tmp/aws
+
+# Ahead of /usr/bin in PATH: the init script's curl calls retry refused
+# connections (see the file).
+COPY --chmod=0755 curl /usr/local/bin/curl
